@@ -39,7 +39,7 @@ This project defines a modular infrastructure setup using Bicep, focused on depl
 Secrets required in GitHub Actions → Secrets:
 
 |Name | Description |
-|:-------------|:--------------:|
+|:-------------|--------------:|
 | AZURE_CREDENTIALS       |    Azure service principal in JSON (sdk-auth)    | 
 | AZURE_SUBSCRIPTION_ID       |     Azure subscription ID     |   
 | AZURE_RG_DEV       |     Dev Resource Group name     | 
