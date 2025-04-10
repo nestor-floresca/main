@@ -1,4 +1,4 @@
-Azure Modular Infrastructure Deployment
+## Azure Modular Infrastructure Deployment
 ## 🔧  Project Overview
 This project defines a modular infrastructure setup using Bicep, focused on deploying the following Azure services:
 
