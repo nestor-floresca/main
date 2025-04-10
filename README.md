@@ -13,6 +13,7 @@ This project defines a modular infrastructure setup using Bicep, focused on depl
 ✅ GitHub Actions for CI/CD deployment across environments
 
 🗂️ Project Structure
+
 ├── main.bicep                    # Root orchestrator for all modules
 ├── .github/
 │   └── workflows/
