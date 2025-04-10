@@ -5,8 +5,11 @@ Azure Modular Infrastructure Deployment
 This project defines a modular infrastructure setup using Bicep, focused on deploying the following Azure services:
 
 ✅ Azure OpenAI (via Cognitive Services)
+
 ✅ Azure AI Search (formerly Cognitive Search)
+
 ✅ Azure Storage Account (configured for public access in dev)
+
 ✅ GitHub Actions for CI/CD deployment across environments
 
 🗂️ Project Structure
