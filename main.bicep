@@ -4,7 +4,7 @@ param environment string = 'dev'
 
 // Azure OpenAI Module 
 module openAI './modules/openAI/openAI.bicep' = {
-  name: 'openAI-chatbot-${environment}'
+  name: 'openAI-wegman-chatbot-${environment}'
   params: {
     environment: environment
   }
@@ -12,7 +12,7 @@ module openAI './modules/openAI/openAI.bicep' = {
 
 // Azure AI Search Module
 module aiSearch './modules/aiSearch/aiSearch.bicep' = {
-  name: 'aiSearch-chatbot-${environment}'
+  name: 'aiSearch-wegman-chatbot-${environment}'
   params: {
     environment: environment
   }
@@ -20,7 +20,7 @@ module aiSearch './modules/aiSearch/aiSearch.bicep' = {
 
 // Azure Storage Account Module
 module storageAccount './modules/storageAccount/storageAccount.bicep' = {
-  name: 'storagechatbot${environment}'
+  name: 'stgwegmanchatbot${environment}'
   params: {
     environment: environment
   }
