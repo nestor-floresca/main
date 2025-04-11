@@ -22,13 +22,16 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ env.ARM_TENANT_ID }}
+          tenant-id: ${{ env.ARM_CLIENT_ID }}
+          subscription-id: ${{ inputs.subscription-id }}
+          
 
       - name: Deploy to Dev
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ secrets.AZURE_RG_DEV }}
+          subscriptionId: ${{ inputs.subscription-id }}
+          resourceGroupName: ${{ inputs.resource-group-name }}
           template: main.bicep
           parameters: environment=dev
           scope: resourcegroup
