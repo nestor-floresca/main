@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.34.44.8038",
-      "templateHash": "4466916489860523722"
+      "templateHash": "4099169032800505855"
     }
   },
   "parameters": {
@@ -18,7 +18,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('openAI-chatbot-{0}', parameters('environment'))]",
+      "name": "[format('openAI-wegman-chatbot-{0}', parameters('environment'))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -36,7 +36,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "13375383936689521205"
+              "templateHash": "7387896797943816418"
             }
           },
           "parameters": {
@@ -48,7 +48,7 @@
             {
               "type": "Microsoft.CognitiveServices/accounts",
               "apiVersion": "2023-05-01",
-              "name": "[format('openai-chatbot-{0}', parameters('environment'))]",
+              "name": "[format('openai-wegman-chatbot-{0}', parameters('environment'))]",
               "location": "[resourceGroup().location]",
               "sku": {
                 "name": "S0",
@@ -56,7 +56,7 @@
               },
               "kind": "OpenAI",
               "properties": {
-                "customSubDomainName": "[format('openai-chatbot-sub-{0}', parameters('environment'))]",
+                "customSubDomainName": "[format('openai-wegman-chatbot-sub-{0}', parameters('environment'))]",
                 "publicNetworkAccess": "Enabled"
               }
             }
@@ -67,7 +67,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('aiSearch-chatbot-{0}', parameters('environment'))]",
+      "name": "[format('aiSearch-wegman-chatbot-{0}', parameters('environment'))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -85,7 +85,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "15778556454110726064"
+              "templateHash": "8855679456735756973"
             }
           },
           "parameters": {
@@ -97,7 +97,7 @@
             {
               "type": "Microsoft.Search/searchServices",
               "apiVersion": "2020-08-01",
-              "name": "[format('aisearch-chatbot-{0}', parameters('environment'))]",
+              "name": "[format('aisearch-wegman-chatbot-{0}', parameters('environment'))]",
               "location": "[resourceGroup().location]",
               "sku": {
                 "name": "standard"
@@ -119,7 +119,7 @@
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2022-09-01",
-      "name": "[format('storagechatbot{0}', parameters('environment'))]",
+      "name": "[format('storagewegmanchatbot{0}', parameters('environment'))]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -137,7 +137,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.34.44.8038",
-              "templateHash": "14820916151112901131"
+              "templateHash": "302421069287732354"
             }
           },
           "parameters": {
@@ -149,7 +149,7 @@
             {
               "type": "Microsoft.Storage/storageAccounts",
               "apiVersion": "2022-05-01",
-              "name": "[format('storagechatbot{0}', parameters('environment'))]",
+              "name": "[format('storagewegmanchatbot{0}', parameters('environment'))]",
               "location": "[resourceGroup().location]",
               "sku": {
                 "name": "Standard_LRS"
@@ -163,6 +163,154 @@
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2022-09-01",
+      "name": "[format('aiHub{0}', parameters('environment'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "aiHubName": {
+            "value": "[format('aiHubChatbot{0}', parameters('environment'))]"
+          },
+          "environment": {
+            "value": "[parameters('environment')]"
+          },
+          "storageAccountName": {
+            "value": "[format('storagewegmanchatbot{0}', parameters('environment'))]"
+          },
+          "keyVaultName": {
+            "value": "[format('aiHubWegmanChatbot{0}kv', parameters('environment'))]"
+          },
+          "location": {
+            "value": "[resourceGroup().location]"
+          },
+          "tags": {
+            "value": {
+              "owner": "Wegmans",
+              "project": "AIChatbot"
+            }
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.34.44.8038",
+              "templateHash": "3329963094646043274"
+            }
+          },
+          "parameters": {
+            "aiHubName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of the AI Hub resource group"
+              }
+            },
+            "environment": {
+              "type": "string",
+              "metadata": {
+                "description": "Environment name (e.g. dev, test, prod)"
+              }
+            },
+            "location": {
+              "type": "string",
+              "defaultValue": "[resourceGroup().location]",
+              "metadata": {
+                "description": "Location for AI Hub resources"
+              }
+            },
+            "storageAccountName": {
+              "type": "string",
+              "metadata": {
+                "description": "Exsting storage account name"
+              }
+            },
+            "keyVaultName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of key vault"
+              }
+            },
+            "tags": {
+              "type": "object",
+              "defaultValue": {},
+              "metadata": {
+                "description": "Tags to associate with the AI Hub resources"
+              }
+            }
+          },
+          "variables": {
+            "fullname": "[format('{0}-{1}', parameters('aiHubName'), parameters('environment'))]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.KeyVault/vaults",
+              "apiVersion": "2022-11-01",
+              "name": "[parameters('keyVaultName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "sku": {
+                  "family": "A",
+                  "name": "standard"
+                },
+                "tenantId": "[subscription().tenantId]",
+                "enableSoftDelete": true,
+                "enablePurgeProtection": true,
+                "enabledForDeployment": true,
+                "enabledForDiskEncryption": true,
+                "enabledForTemplateDeployment": true,
+                "accessPolicies": []
+              },
+              "tags": "[parameters('tags')]"
+            },
+            {
+              "type": "Microsoft.MachineLearningServices/workspaces",
+              "apiVersion": "2023-10-01",
+              "name": "[variables('fullname')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+              },
+              "identity": {
+                "type": "SystemAssigned"
+              },
+              "properties": {
+                "description": "[format('AI Hub for Wegmans Chatbot {0} environment', parameters('environment'))]",
+                "friendlyName": "[variables('fullname')]",
+                "publicNetworkAccess": "Enabled",
+                "storageAccount": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+                "keyVault": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+              },
+              "tags": "[union(parameters('tags'), createObject('owner', 'Wegmans', 'project', 'AIChatbot'))]",
+              "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+              ]
+            }
+          ],
+          "outputs": {
+            "storageAccountId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+            },
+            "keyVaultId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+            },
+            "workspaceName": {
+              "type": "string",
+              "value": "[variables('fullname')]"
+            }
+          }
         }
       }
     }
