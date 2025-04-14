@@ -4,31 +4,59 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # allows manual triggering
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+      subscription-id:
+        description: 'Azure Subscription ID'
+        required: true
+        type: string
+      resourcegroup-id:
+        description: 'Azure Resource Group Name'
+        required: true
+        type: string
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  deploy-dev:
-    name: Auto Deploy to Dev
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment }}
+
     runs-on: ubuntu-latest
-    environment: development
+
+    environment: ${{ github.event.inputs.environment }}
+    env:
+      BUILD_VERSION: ${{ github.run_number }}-${{ github.run_id }}
+    
+    concurrency:
+      group: deploy-${{ github.event.inputs.environment }}
+      cancel-in-progress: true
+    
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          tenant-id: ${{ env.ARM_TENANT_ID }}
+          client-id: ${{ env.ARM_CLIENT_ID }}
+          subscription-id: ${{ github.event.inputs.subscription-id }}
 
-      - name: Deploy to Dev
+      - name: Deploy to ${{ github.event.inputs.environment }}
         uses: azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ secrets.AZURE_RG_DEV }}
-          template: main.bicep
-          parameters: environment=dev
+          subscriptionId: ${{ github.event.inputs.subscription-id }}
+          resourceGroupName: ${{ github.event.inputs.resourcegroup-id }}
+          template: infra/main.bicep
+          parameters: environment=${{ github.event.inputs.environment }}
           scope: resourcegroup
